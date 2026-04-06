@@ -13,3 +13,4 @@
 /Users/falvesmac/Dev/apis/controle-financeiro/Infrastructure/obj/Debug/net10.0/refint/Infrastructure.dll
 /Users/falvesmac/Dev/apis/controle-financeiro/Infrastructure/obj/Debug/net10.0/Infrastructure.pdb
 /Users/falvesmac/Dev/apis/controle-financeiro/Infrastructure/obj/Debug/net10.0/ref/Infrastructure.dll
+/Users/falvesmac/Dev/apis/controle-financeiro/Infrastructure/obj/Debug/net10.0/Infrastructure.sourcelink.json

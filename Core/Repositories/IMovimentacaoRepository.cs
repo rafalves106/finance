@@ -4,10 +4,10 @@ namespace Finance.Core.Repositories;
 
 public interface IMovimentacaoRepository
 {
-    void Adicionar(Movimentacao movimentacao);
+    Guid Adicionar(Movimentacao movimentacao);
     IEnumerable<Movimentacao> Listar();
     void Remover(Movimentacao movimentacao);
-    void Atualizar(Guid id, Movimentacao movimentacao);
+    void Atualizar(Movimentacao movimentacao);
     Movimentacao? ObterPorId(Guid id);
     IEnumerable<Entrada> ListarEntradas();
     IEnumerable<Saida> ListarSaidas();

@@ -7,6 +7,18 @@ public class AtualizarMovimentacaoUseCase(IMovimentacaoRepository _movimentacaoR
 {
     public void Executar(Guid id, Movimentacao movimentacao)
     {
-        _movimentacaoRepository.Atualizar(id,movimentacao);
+        var movimentacaoExistente = _movimentacaoRepository.ObterPorId(id);
+
+        if (movimentacaoExistente == null)
+        {
+            throw new Exception("Movimentação não encontrada.");
+        }
+
+        movimentacaoExistente.Titulo = movimentacao.Titulo;
+        movimentacaoExistente.Descricao = movimentacao.Descricao;
+        movimentacaoExistente.Valor = movimentacao.Valor;
+        movimentacaoExistente.Data = movimentacao.Data;
+
+        _movimentacaoRepository.Atualizar(movimentacaoExistente);
     }
 }

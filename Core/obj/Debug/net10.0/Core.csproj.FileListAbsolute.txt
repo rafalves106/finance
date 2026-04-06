@@ -9,3 +9,4 @@
 /Users/falvesmac/Dev/apis/controle-financeiro/Core/obj/Debug/net10.0/refint/Core.dll
 /Users/falvesmac/Dev/apis/controle-financeiro/Core/obj/Debug/net10.0/Core.pdb
 /Users/falvesmac/Dev/apis/controle-financeiro/Core/obj/Debug/net10.0/ref/Core.dll
+/Users/falvesmac/Dev/apis/controle-financeiro/Core/obj/Debug/net10.0/Core.sourcelink.json

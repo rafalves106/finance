@@ -13,10 +13,11 @@ public class MovimentacaoRepository : IMovimentacaoRepository
         _context = context;
     }
 
-    public void Adicionar(Movimentacao movimentacao)
+    public Guid Adicionar(Movimentacao movimentacao)
     {
         _context.Movimentacoes.Add(movimentacao);
         _context.SaveChanges();
+        return movimentacao.Id;
     }
 
     public IEnumerable<Movimentacao> Listar()
@@ -30,7 +31,7 @@ public class MovimentacaoRepository : IMovimentacaoRepository
         _context.SaveChanges();
     }
 
-    public void Atualizar(Guid id,Movimentacao movimentacao)
+    public void Atualizar(Movimentacao movimentacao)
     {
         _context.Movimentacoes.Update(movimentacao);
         _context.SaveChanges();

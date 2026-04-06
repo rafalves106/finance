@@ -5,8 +5,8 @@ namespace Finance.Core.UseCases;
 
 public class CriarMovimentacaoUseCase(IMovimentacaoRepository _movimentacaoRepository)
 {
-    public void Executar(Movimentacao movimentacao)
+    public Guid Executar(Movimentacao movimentacao)
     {
-        _movimentacaoRepository.Adicionar(movimentacao);
+        return _movimentacaoRepository.Adicionar(movimentacao);
     }
 }

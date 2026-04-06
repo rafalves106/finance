@@ -6,10 +6,9 @@ public abstract class Movimentacao
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public decimal Valor { get; set; }
+    public DateTime Data { get; set; }
 
     public TipoMovimentacao Tipo { get; protected set; }
-
-    public DateTime Data { get; private set; }
 
     protected Movimentacao(string titulo, string descricao, decimal valor, DateTime data)
     {

@@ -165,3 +165,5 @@
 /Users/falvesmac/Dev/apis/controle-financeiro/API/obj/Debug/net10.0/API.pdb
 /Users/falvesmac/Dev/apis/controle-financeiro/API/obj/Debug/net10.0/API.genruntimeconfig.cache
 /Users/falvesmac/Dev/apis/controle-financeiro/API/obj/Debug/net10.0/ref/API.dll
+/Users/falvesmac/Dev/apis/controle-financeiro/API/bin/Debug/net10.0/appsettings.Example.json
+/Users/falvesmac/Dev/apis/controle-financeiro/API/obj/Debug/net10.0/API.sourcelink.json

@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Finance.Core.UseCases;
 using Finance.Core.Domain;
+using Finance.Core.Application.DTOs;
 
 namespace Finance.API.Controllers;
 
-    public record MovimentacaoDTO(TipoMovimentacao Tipo, string Titulo, string Descricao, decimal Valor, DateTime Data);
-
 [ApiController]
 [Route("api/v1/movimentacoes")]
-public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoUseCase, AtualizarMovimentacaoUseCase atualizarMovimentacaoUseCase, ListarMovimentacoesUseCase listarMovimentacoesUseCase, BuscarMovimentacaoUseCase buscarMovimentacaoUseCase, BuscarEntradaUseCase buscarEntradaUseCase, BuscarSaidaUseCase buscarSaidaUseCase, RemoverMovimentacaoUseCase removerMovimentacaoUseCase) : ControllerBase
+public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoUseCase, AtualizarMovimentacaoUseCase atualizarMovimentacaoUseCase, ListarMovimentacoesUseCase listarMovimentacoesUseCase, BuscarMovimentacaoUseCase buscarMovimentacaoUseCase, BuscarEntradaUseCase buscarEntradaUseCase, BuscarSaidaUseCase buscarSaidaUseCase, RemoverMovimentacaoUseCase removerMovimentacaoUseCase, BuscarMovimentacoesPorPeriodoUseCase buscarMovimentacoesPorPeriodoUseCase, BuscarEntradasPorPeriodoUseCase buscarEntradasPorPeriodoUseCase, BuscarSaidasPorPeriodoUseCase buscarSaidasPorPeriodoUseCase) : ControllerBase
 {
     [HttpPost]
     public IActionResult CriarMovimentacao([FromBody] MovimentacaoDTO movimentacaoDTO)
@@ -37,6 +36,10 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         try
         {
             var movimentacoes = listarMovimentacoesUseCase.Executar();
+            if (movimentacoes == null || !movimentacoes.Any())
+            {
+                return NotFound("Nenhuma movimentação encontrada.");
+            }
             return Ok(movimentacoes);
         }
         catch (Exception ex)
@@ -51,6 +54,10 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         try
         {
             var movimentacao = buscarMovimentacaoUseCase.Executar(id);
+            if (movimentacao == null)
+            {
+                return NotFound($"Nenhuma movimentação encontrada com o ID: {id}");
+            }
             return Ok(movimentacao);
         }
         catch (Exception ex)
@@ -95,19 +102,40 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         }
     }
 
+    [HttpGet("periodo")]
+    public IActionResult BuscarMovimentacoesPorPeriodo([FromQuery] DateTime dataInicio, [FromQuery] DateTime dataFim, [FromQuery] TipoMovimentacao tipo)
+    {
+        try
+        {
+            var movimentacoes = buscarMovimentacoesPorPeriodoUseCase.Executar(dataInicio, dataFim);
+
+            if (tipo == TipoMovimentacao.Entrada)
+            {
+                movimentacoes = buscarEntradasPorPeriodoUseCase.Executar(dataInicio, dataFim);
+            }
+            else if (tipo == TipoMovimentacao.Saida)
+            {
+                movimentacoes = buscarSaidasPorPeriodoUseCase.Executar(dataInicio, dataFim);
+            }
+
+            if (movimentacoes == null || !movimentacoes.Any())
+            {
+                return NotFound("Nenhuma movimentação encontrada para o período especificado.");
+            }
+            return Ok(movimentacoes);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao buscar movimentações por período: {ex.Message}");
+        }
+    }
+
     [HttpPut("{id}")]
     public IActionResult AtualizarMovimentacao(Guid id, [FromBody] MovimentacaoDTO movimentacaoDTO)
     {
         try
         {
-            Movimentacao movimentacao = movimentacaoDTO.Tipo switch
-            {
-                TipoMovimentacao.Entrada => new Entrada(movimentacaoDTO.Titulo, movimentacaoDTO.Descricao, movimentacaoDTO.Valor, movimentacaoDTO.Data),
-                TipoMovimentacao.Saida => new Saida(movimentacaoDTO.Titulo, movimentacaoDTO.Descricao, movimentacaoDTO.Valor, movimentacaoDTO.Data),
-                _ => throw new ArgumentException("Tipo de movimentação inválido.")
-            };
-
-            atualizarMovimentacaoUseCase.Executar(id, movimentacao);
+            atualizarMovimentacaoUseCase.Executar(id, movimentacaoDTO);
             return NoContent();
         }
         catch (ArgumentException ex)

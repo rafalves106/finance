@@ -4,6 +4,8 @@ using Finance.Core.UseCases;
 using Finance.Infrastructure.Repositories;
 using Finance.Infrastructure.Data;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
@@ -21,6 +23,9 @@ builder.Services.AddScoped<RemoverMovimentacaoUseCase>();
 builder.Services.AddScoped<BuscarMovimentacaoUseCase>();
 builder.Services.AddScoped<BuscarEntradaUseCase>();
 builder.Services.AddScoped<BuscarSaidaUseCase>();
+builder.Services.AddScoped<BuscarMovimentacoesPorPeriodoUseCase>();
+builder.Services.AddScoped<BuscarEntradasPorPeriodoUseCase>();
+builder.Services.AddScoped<BuscarSaidasPorPeriodoUseCase>();
 
 builder.Services.AddControllers();
 

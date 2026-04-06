@@ -1,11 +1,11 @@
-using Finance.Core.Domain;
 using Finance.Core.Repositories;
+using Finance.Core.Application.DTOs;
 
 namespace Finance.Core.UseCases;
 
 public class AtualizarMovimentacaoUseCase(IMovimentacaoRepository _movimentacaoRepository)
 {
-    public void Executar(Guid id, Movimentacao movimentacao)
+    public void Executar(Guid id, MovimentacaoDTO dto)
     {
         var movimentacaoExistente = _movimentacaoRepository.ObterPorId(id);
 
@@ -14,10 +14,10 @@ public class AtualizarMovimentacaoUseCase(IMovimentacaoRepository _movimentacaoR
             throw new Exception("Movimentação não encontrada.");
         }
 
-        movimentacaoExistente.Titulo = movimentacao.Titulo;
-        movimentacaoExistente.Descricao = movimentacao.Descricao;
-        movimentacaoExistente.Valor = movimentacao.Valor;
-        movimentacaoExistente.Data = movimentacao.Data;
+        movimentacaoExistente.Titulo = dto.Titulo;
+        movimentacaoExistente.Descricao = dto.Descricao;
+        movimentacaoExistente.Valor = dto.Valor;
+        movimentacaoExistente.Data = dto.Data;
 
         _movimentacaoRepository.Atualizar(movimentacaoExistente);
     }

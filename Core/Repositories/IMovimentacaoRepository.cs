@@ -11,4 +11,5 @@ public interface IMovimentacaoRepository
     Movimentacao? ObterPorId(Guid id);
     IEnumerable<Entrada> ListarEntradas();
     IEnumerable<Saida> ListarSaidas();
+    IEnumerable<Movimentacao> ListarPorPeriodo(DateTime dataInicio, DateTime dataFim);
 }

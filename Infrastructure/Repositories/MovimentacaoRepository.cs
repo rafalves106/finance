@@ -51,4 +51,11 @@ public class MovimentacaoRepository : IMovimentacaoRepository
     {
         return _context.Movimentacoes.OfType<Saida>().ToList();
     }
+
+    public IEnumerable<Movimentacao> ListarPorPeriodo(DateTime dataInicio, DateTime dataFim)
+    {
+        return _context.Movimentacoes
+            .Where(m => m.Data >= dataInicio && m.Data <= dataFim)
+            .ToList();
+    }
 }

@@ -8,6 +8,16 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
 
 builder.Services.AddDbContext<MovimentacaoDbContext>(options =>
@@ -41,5 +51,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
+app.UseCors("FrontendPolicy");
 app.MapControllers();
 app.Run();

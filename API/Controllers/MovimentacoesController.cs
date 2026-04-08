@@ -16,12 +16,29 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         {
             Movimentacao movimentacao = movimentacaoDTO.Tipo switch
             {
-                TipoMovimentacao.Entrada => new Entrada(movimentacaoDTO.Titulo, movimentacaoDTO.Descricao, movimentacaoDTO.Valor, movimentacaoDTO.Data),
-                TipoMovimentacao.Saida => new Saida(movimentacaoDTO.Titulo, movimentacaoDTO.Descricao, movimentacaoDTO.Valor, movimentacaoDTO.Data),
+                TipoMovimentacao.Entrada => new Entrada(
+                    movimentacaoDTO.Titulo, 
+                    movimentacaoDTO.Descricao, 
+                    movimentacaoDTO.Valor, 
+                    movimentacaoDTO.Data,
+                    movimentacaoDTO.Fixa,
+                    movimentacaoDTO.DiaFixo,
+                    movimentacaoDTO.Periodo
+                ),
+                TipoMovimentacao.Saida => new Saida(
+                    movimentacaoDTO.Titulo, 
+                    movimentacaoDTO.Descricao, 
+                    movimentacaoDTO.Valor, 
+                    movimentacaoDTO.Data,
+                    movimentacaoDTO.Fixa,
+                    movimentacaoDTO.DiaFixo,
+                    movimentacaoDTO.Periodo
+                ),
                 _ => throw new ArgumentException("Tipo de movimentação inválido.")
             };
 
             criarMovimentacaoUseCase.Executar(movimentacao);
+            
             return CreatedAtAction(nameof(CriarMovimentacao), new { id = movimentacao.Id }, movimentacao);
         }
         catch (ArgumentException ex)

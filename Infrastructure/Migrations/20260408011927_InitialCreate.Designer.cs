@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovimentacaoDbContext))]
-    [Migration("20260406150115_AlteraTipoMovimentacaoParaString")]
-    partial class AlteraTipoMovimentacaoParaString
+    [Migration("20260408011927_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,12 +32,24 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("DiaFixo")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Fixa")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("GrupoRecorrenciaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Periodo")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Tipo")
                         .IsRequired()

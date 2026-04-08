@@ -16,11 +16,15 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GrupoRecorrenciaId = table.Column<Guid>(type: "uuid", nullable: true),
                     Titulo = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Valor = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    Tipo = table.Column<int>(type: "integer", nullable: false),
-                    Data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Data = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Fixa = table.Column<bool>(type: "boolean", nullable: false),
+                    DiaFixo = table.Column<int>(type: "integer", nullable: true),
+                    Periodo = table.Column<int>(type: "integer", nullable: false),
+                    Tipo = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

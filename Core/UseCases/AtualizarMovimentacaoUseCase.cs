@@ -14,7 +14,7 @@ public class AtualizarMovimentacaoUseCase(IMovimentacaoRepository _movimentacaoR
             throw new Exception("Movimentação não encontrada.");
         }
 
-        movimentacaoExistente.AtualizarDados(dto.Titulo, dto.Descricao, dto.Valor, dto.Data, dto.Fixa, dto.DiaFixo, dto.Periodo);
+        movimentacaoExistente.AtualizarDados(dto.Titulo, dto.Descricao, dto.Valor, dto.Data, dto.Fixa, dto.Periodo);
 
         _movimentacaoRepository.Atualizar(movimentacaoExistente);
     }

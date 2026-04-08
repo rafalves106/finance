@@ -22,7 +22,6 @@ namespace Infrastructure.Migrations
                     Valor = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     Data = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Fixa = table.Column<bool>(type: "boolean", nullable: false),
-                    DiaFixo = table.Column<int>(type: "integer", nullable: true),
                     Periodo = table.Column<int>(type: "integer", nullable: false),
                     Tipo = table.Column<string>(type: "text", nullable: false)
                 },

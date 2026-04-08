@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovimentacaoDbContext))]
-    [Migration("20260408011927_InitialCreate")]
+    [Migration("20260408220417_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,9 +38,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
-
-                    b.Property<int?>("DiaFixo")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("Fixa")
                         .HasColumnType("boolean");

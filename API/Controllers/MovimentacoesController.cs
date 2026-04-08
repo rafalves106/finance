@@ -22,7 +22,6 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
                     movimentacaoDTO.Valor, 
                     movimentacaoDTO.Data,
                     movimentacaoDTO.Fixa,
-                    movimentacaoDTO.DiaFixo,
                     movimentacaoDTO.Periodo
                 ),
                 TipoMovimentacao.Saida => new Saida(
@@ -31,7 +30,6 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
                     movimentacaoDTO.Valor, 
                     movimentacaoDTO.Data,
                     movimentacaoDTO.Fixa,
-                    movimentacaoDTO.DiaFixo,
                     movimentacaoDTO.Periodo
                 ),
                 _ => throw new ArgumentException("Tipo de movimentação inválido.")

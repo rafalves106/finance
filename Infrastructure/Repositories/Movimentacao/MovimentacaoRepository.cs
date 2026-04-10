@@ -6,9 +6,9 @@ namespace Finance.Infrastructure.Repositories;
 
 public class MovimentacaoRepository : IMovimentacaoRepository
 {
-    private readonly MovimentacaoDbContext _context;
+    private readonly FinanceDbContext _context;
 
-    public MovimentacaoRepository(MovimentacaoDbContext context)
+    public MovimentacaoRepository(FinanceDbContext context)
     {
         _context = context;
     }

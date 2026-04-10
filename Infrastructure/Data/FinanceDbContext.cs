@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Finance.Core.Domain;
+using Finance.Infrastructure.Data.Configurations;
 
 namespace Finance.Infrastructure.Data;
 
-public class MovimentacaoDbContext : DbContext
+public class FinanceDbContext : DbContext
 {
     public DbSet<Movimentacao> Movimentacoes { get; set; }
     public DbSet<Entrada> Entradas { get; set; }
     public DbSet<Saida> Saidas { get; set; }
+    public DbSet<Investimento> Investimentos { get; set; }
+    public DbSet<TransacaoInvestimento> TransacoesInvestimento { get; set; }
 
-    public MovimentacaoDbContext(DbContextOptions<MovimentacaoDbContext> options) : base(options)
+    public FinanceDbContext(DbContextOptions<FinanceDbContext> options) : base(options)
     {
     }
 
@@ -33,5 +36,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         });
 
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfiguration(new InvestimentoConfiguration());
     }
 }

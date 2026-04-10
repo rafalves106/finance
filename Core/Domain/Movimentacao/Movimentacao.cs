@@ -4,6 +4,7 @@ public abstract class Movimentacao
 {
     public Guid Id { get; private set; }
     public Guid? GrupoRecorrenciaId { get; private set; }
+    public Guid? InvestimentoId { get; private set; }
     public string Titulo { get; private set; }
     public string Descricao { get; private set; }
     public decimal Valor { get; private set; }
@@ -11,7 +12,7 @@ public abstract class Movimentacao
     public bool Fixa { get; private set; }
     public int Periodo { get; private set; }
     public TipoMovimentacao Tipo { get; protected set; }
-    protected Movimentacao(string titulo, string descricao, decimal valor, DateTime data, bool fixa = false, int periodo = 0, Guid? grupoRecorrenciaId = null)
+    protected Movimentacao(string titulo, string descricao, decimal valor, DateTime data, bool fixa = false, int periodo = 0, Guid? grupoRecorrenciaId = null, Guid? investimentoId = null)
     {
         if (valor <= 0) throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
         if (string.IsNullOrWhiteSpace(titulo)) throw new ArgumentException("O título não pode ser vazio.", nameof(titulo));
@@ -27,6 +28,7 @@ public abstract class Movimentacao
         Fixa = fixa;
         Periodo = periodo;
         GrupoRecorrenciaId = grupoRecorrenciaId;
+        InvestimentoId = investimentoId;
     }
     public void AtualizarDados(string titulo, string descricao, decimal valor, DateTime data, bool fixa, int periodo)
     {

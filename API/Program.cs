@@ -3,6 +3,7 @@ using Finance.Core.Repositories;
 using Finance.Core.UseCases;
 using Finance.Infrastructure.Repositories;
 using Finance.Infrastructure.Data;
+using System.Text.Json.Serialization;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -20,12 +21,14 @@ builder.Services.AddCors(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
 
-builder.Services.AddDbContext<MovimentacaoDbContext>(options =>
+builder.Services.AddDbContext<FinanceDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
+builder.Services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
+
 builder.Services.AddScoped<CriarMovimentacaoUseCase>();
 builder.Services.AddScoped<ListarMovimentacoesUseCase>();
 builder.Services.AddScoped<AtualizarMovimentacaoUseCase>();
@@ -37,7 +40,19 @@ builder.Services.AddScoped<BuscarMovimentacoesPorPeriodoUseCase>();
 builder.Services.AddScoped<BuscarEntradasPorPeriodoUseCase>();
 builder.Services.AddScoped<BuscarSaidasPorPeriodoUseCase>();
 
-builder.Services.AddControllers();
+builder.Services.AddScoped<CriarInvestimentoUseCase>();
+builder.Services.AddScoped<ListarInvestimentosUseCase>();
+builder.Services.AddScoped<ObterInvestimentoPorIdUseCase>();
+builder.Services.AddScoped<RealizarAporteUseCase>();
+builder.Services.AddScoped<RealizarSaqueUseCase>();
+builder.Services.AddScoped<AtualizarSaldoInvestimentoUseCase>();
+builder.Services.AddScoped<RemoverInvestimentoUseCase>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 var app = builder.Build();
 

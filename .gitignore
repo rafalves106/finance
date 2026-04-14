@@ -1,3 +1,16 @@
-# Ignorar arquivos de configuração com segredos
-appsettings.json
+# =========================
+# .NET / C# (Backend)
+# =========================
+[Bb]in/
+[Oo]bj/
 appsettings.Development.json
+*.user
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sw?

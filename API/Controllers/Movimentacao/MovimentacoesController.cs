@@ -17,17 +17,17 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
             Movimentacao movimentacao = movimentacaoDTO.Tipo switch
             {
                 TipoMovimentacao.Entrada => new Entrada(
-                    movimentacaoDTO.Titulo, 
-                    movimentacaoDTO.Descricao, 
-                    movimentacaoDTO.Valor, 
+                    movimentacaoDTO.Titulo,
+                    movimentacaoDTO.Descricao,
+                    movimentacaoDTO.Valor,
                     movimentacaoDTO.Data,
                     movimentacaoDTO.Fixa,
                     movimentacaoDTO.Periodo
                 ),
                 TipoMovimentacao.Saida => new Saida(
-                    movimentacaoDTO.Titulo, 
-                    movimentacaoDTO.Descricao, 
-                    movimentacaoDTO.Valor, 
+                    movimentacaoDTO.Titulo,
+                    movimentacaoDTO.Descricao,
+                    movimentacaoDTO.Valor,
                     movimentacaoDTO.Data,
                     movimentacaoDTO.Fixa,
                     movimentacaoDTO.Periodo
@@ -36,7 +36,7 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
             };
 
             criarMovimentacaoUseCase.Executar(movimentacao);
-            
+
             return CreatedAtAction(nameof(CriarMovimentacao), new { id = movimentacao.Id }, movimentacao);
         }
         catch (ArgumentException ex)
@@ -51,10 +51,6 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         try
         {
             var movimentacoes = listarMovimentacoesUseCase.Executar();
-            if (movimentacoes == null || !movimentacoes.Any())
-            {
-                return NotFound("Nenhuma movimentação encontrada.");
-            }
             return Ok(movimentacoes);
         }
         catch (Exception ex)
@@ -62,7 +58,7 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
             return StatusCode(500, $"Erro ao listar movimentações: {ex.Message}");
         }
     }
-    
+
     [HttpGet("{id}")]
     public IActionResult BuscarMovimentacao(Guid id)
     {
@@ -86,12 +82,7 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
     {
         try
         {
-            var entradas = buscarEntradaUseCase.Executar();
-            if (entradas == null || !entradas.Any())
-            {
-                return NotFound("Nenhuma entrada encontrada.");
-            }
-            return Ok(entradas);
+            return Ok(buscarEntradaUseCase.Executar());
         }
         catch (Exception ex)
         {
@@ -99,17 +90,13 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
         }
     }
 
+
     [HttpGet("saidas")]
     public IActionResult BuscarSaidas()
     {
         try
         {
-            var saidas = buscarSaidaUseCase.Executar();
-            if (saidas == null || !saidas.Any())
-            {
-                return NotFound("Nenhuma saída encontrada.");
-            }
-            return Ok(saidas);
+            return Ok(buscarSaidaUseCase.Executar());
         }
         catch (Exception ex)
         {
@@ -118,30 +105,25 @@ public class MovimentacoesController(CriarMovimentacaoUseCase criarMovimentacaoU
     }
 
     [HttpGet("periodo")]
-    public IActionResult BuscarMovimentacoesPorPeriodo([FromQuery] DateTime dataInicio, [FromQuery] DateTime dataFim, [FromQuery] TipoMovimentacao tipo)
+    public IActionResult BuscarMovimentacoesPorPeriodo(
+[FromQuery] DateTime dataInicio,
+[FromQuery] DateTime dataFim,
+[FromQuery] TipoMovimentacao? tipo = null)
     {
         try
         {
-            var movimentacoes = buscarMovimentacoesPorPeriodoUseCase.Executar(dataInicio, dataFim);
+            var movimentacoes = tipo switch
+            {
+                TipoMovimentacao.Entrada => buscarEntradasPorPeriodoUseCase.Executar(dataInicio, dataFim),
+                TipoMovimentacao.Saida => buscarSaidasPorPeriodoUseCase.Executar(dataInicio, dataFim),
+                _ => buscarMovimentacoesPorPeriodoUseCase.Executar(dataInicio, dataFim)
+            };
 
-            if (tipo == TipoMovimentacao.Entrada)
-            {
-                movimentacoes = buscarEntradasPorPeriodoUseCase.Executar(dataInicio, dataFim);
-            }
-            else if (tipo == TipoMovimentacao.Saida)
-            {
-                movimentacoes = buscarSaidasPorPeriodoUseCase.Executar(dataInicio, dataFim);
-            }
-
-            if (movimentacoes == null || !movimentacoes.Any())
-            {
-                return NotFound("Nenhuma movimentação encontrada para o período especificado.");
-            }
             return Ok(movimentacoes);
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Erro ao buscar movimentações por período: {ex.Message}");
+            return StatusCode(500, $"Erro ao buscar movimentações: {ex.Message}");
         }
     }
 

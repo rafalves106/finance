@@ -11,16 +11,16 @@ public class CriarInvestimentoUseCase(
     public Guid Executar(CriarInvestimentoDTO dto)
     {
         var investimento = new Investimento(
-            dto.Nome, dto.Instituicao, dto.Tipo, dto.ValorAplicado, 
-            dto.DataInicio, dto.TipoRentabilidade, dto.Liquidez, 
+            dto.Nome, dto.Instituicao, dto.Tipo, dto.ValorAplicado,
+            dto.DataInicio, dto.TipoRentabilidade, dto.Liquidez,
             dto.DataVencimento, dto.TaxaRendimento
         );
 
         var tituloMovimentacao = $"Aplicação inicial: {investimento.Nome}";
         var descricaoMovimentacao = $"Transferência para instituição: {investimento.Instituicao}";
-        
+
         var saida = new Saida(tituloMovimentacao, descricaoMovimentacao, dto.ValorAplicado, dto.DataInicio, false, 0, null, investimento.Id);
-               
+
         _investimentoRepository.Adicionar(investimento);
         _movimentacaoRepository.Adicionar(saida);
 

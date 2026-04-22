@@ -28,6 +28,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
 builder.Services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
+builder.Services.AddScoped<IMetaRepository, MetaRepository>();
 
 builder.Services.AddScoped<CriarMovimentacaoUseCase>();
 builder.Services.AddScoped<ListarMovimentacoesUseCase>();
@@ -48,6 +49,12 @@ builder.Services.AddScoped<RealizarSaqueUseCase>();
 builder.Services.AddScoped<AtualizarSaldoInvestimentoUseCase>();
 builder.Services.AddScoped<RemoverInvestimentoUseCase>();
 
+builder.Services.AddScoped<CriarMetaUseCase>();
+builder.Services.AddScoped<ListarMetasUseCase>();
+builder.Services.AddScoped<AtualizarMetaUseCase>();
+builder.Services.AddScoped<RemoverMetaUseCase>();
+builder.Services.AddScoped<AlternarConclusaoMetaUseCase>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -59,7 +66,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    
+
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "Finance API V1");

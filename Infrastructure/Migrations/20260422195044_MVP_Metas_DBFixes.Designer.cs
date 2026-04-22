@@ -3,6 +3,7 @@ using System;
 using Finance.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class MovimentacaoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422195044_MVP_Metas_DBFixes")]
+    partial class MVP_Metas_DBFixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,10 +55,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<decimal>("SaldoAtual")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal?>("TaxaRendimento")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
@@ -66,14 +71,47 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("ValorAplicado")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("ValorRetirado")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Investimentos", (string)null);
+                    b.HasIndex("Ativo");
+
+                    b.ToTable("Investimentos");
+                });
+
+            modelBuilder.Entity("Finance.Core.Domain.Meta", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Concluida")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("DataAlvo")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Metas");
                 });
 
             modelBuilder.Entity("Finance.Core.Domain.Movimentacao", b =>
@@ -86,7 +124,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
@@ -117,6 +154,12 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Data");
+
+                    b.HasIndex("InvestimentoId");
+
+                    b.HasIndex("Tipo");
+
                     b.ToTable("Movimentacoes");
 
                     b.HasDiscriminator<string>("Tipo");
@@ -136,11 +179,13 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("InvestimentoId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Tipo")
-                        .HasColumnType("integer");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
@@ -161,6 +206,14 @@ namespace Infrastructure.Migrations
                     b.HasBaseType("Finance.Core.Domain.Movimentacao");
 
                     b.HasDiscriminator().HasValue("Saida");
+                });
+
+            modelBuilder.Entity("Finance.Core.Domain.Movimentacao", b =>
+                {
+                    b.HasOne("Finance.Core.Domain.Investimento", null)
+                        .WithMany()
+                        .HasForeignKey("InvestimentoId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("Finance.Core.Domain.TransacaoInvestimento", b =>
